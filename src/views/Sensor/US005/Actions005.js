@@ -31,6 +31,32 @@ export const addSensorType = (name, units)=> {
       .catch(err => {
         dispatch(addSensorTypeFailure(err.message));
       });
+    dispatch(addSensorTypeStarted(name, units));
+    axios
+      .post(`https://localhost:8443/sensors/sensorTypes`, data, {
+          headers: {
+            'Authorization': token,
+            "Access-Control-Allow-Credentials": true,
+            "Access-Control-Allow-Origin": "*",
+            "Content-Type": "application/json"
+          },
+          body: {
+            name, units
+          }
+        }
+      )
+      .then(res => {
+        dispatch(addSensorTypeSuccess(res.data));
+      })
+      .catch(err => {
+        if (err.response === 400) {
+          dispatch(addSensorTypeNoData(err.message))
+        } else {
+          if (err.response !== undefined) {
+            dispatch(addSensorTypeFailure(err.response.data));
+          }
+        }
+      });
   };
 };
 
