@@ -28,6 +28,26 @@ export function addAreaType(typeName) {
       })
       .catch(err => {
         dispatch(addAreaTypeFailure(err.message));
+      })
+    dispatch(addAreaTypeStarted(typeName));
+    axios
+      .post(`https://localhost:8443/geoAreas/areaTypes`, data, {
+          headers: {
+            'Authorization': token,
+            "Access-Control-Allow-Credentials": true,
+            "Access-Control-Allow-Origin": "*",
+            "Content-Type": "application/json"
+          },
+          body: {
+            typeName
+          }
+        }
+      )
+      .then(res => {
+        dispatch(addAreaTypeSuccess(res.data));
+      })
+      .catch(err => {
+        dispatch(addAreaTypeFailure(err.message));
       });
 
   };

@@ -7,9 +7,9 @@ export const FETCH_LOCATION_FAILURE = 'FETCH_LOCATION_FAILURE';
 
 export const fetchLocation = ({geographicAreaId, street, number, zip, town, country, latitude, longitude, altitude}) => {
   const token = localStorage.getItem('loginToken');
+  const data = {geographicAreaId, street, number, zip, town, country, latitude, longitude, altitude};
   return dispatch => {
     dispatch(fetchLocationStarted(geographicAreaId, street, number, zip, town, country, latitude, longitude, altitude));
-    const data = {geographicAreaId, street, number, zip, town, country, latitude, longitude, altitude};
     axios
       .put('https://smarthome-g2-server.herokuapp.com/house/', data, {
           headers: {
@@ -27,7 +27,24 @@ export const fetchLocation = ({geographicAreaId, street, number, zip, town, coun
       .catch(err => {
         dispatch(fetchLocationFailure(err.message))
       })
-
+    dispatch(fetchLocationStarted(geographicAreaId, street, number, zip, town, country, latitude, longitude, altitude));
+    axios
+      .put('https://localhost:8443/house/', data, {
+          headers: {
+            'Authorization': token,
+            "Access-Control-Allow-Credentials": true,
+            "Access-Control-Allow-Origin": "*",
+            "Content-Type": "application/json"
+          },
+          body: {geographicAreaId, street, number, zip, town, country, latitude, longitude, altitude}
+        }
+      )
+      .then(res => {
+        dispatch(fetchLocationSuccess(res.data));
+      })
+      .catch(err => {
+        dispatch(fetchLocationFailure(err.message))
+      })
   };
 };
 

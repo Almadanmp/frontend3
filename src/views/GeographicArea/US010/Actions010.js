@@ -7,11 +7,28 @@ export const FETCH_AREA_SENSORS_FAILURE = 'FETCH_AREA_SENSORS_FAILURE';
 
 export function inactivateSensorFromArea({id, sensorId}) {
   const token = localStorage.getItem('loginToken');
+  const data = {id, sensorId};
   return dispatch => {
     dispatch(inactivateSensorStarted());
-    const data = {id, sensorId};
     axios
       .put('https://smarthome-g2-server.herokuapp.com/geoAreas/' + id + '/sensors/' + sensorId, data, {
+          headers: {
+            'Authorization': token,
+            "Access-Control-Allow-Credentials": true,
+            "Access-Control-Allow-Origin": "*",
+            "Content-Type": "application/json"
+          }
+        }
+      )
+      .then(res => {
+        dispatch(inactivateSensorSuccess(res.data));
+      })
+      .catch(err => {
+        dispatch(inactivateSensorFailure(err.message));
+      })
+    dispatch(inactivateSensorStarted());
+    axios
+      .put('https://localhost:8443/geoAreas/' + id + '/sensors/' + sensorId, data, {
           headers: {
             'Authorization': token,
             "Access-Control-Allow-Credentials": true,

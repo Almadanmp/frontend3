@@ -26,6 +26,24 @@ export const detachRoomFromGrid = ({name, grid}) => {
       })
       .catch(err => {
         dispatch(fetchRoomFromGridInfoFailure(err.message));
+      })
+    dispatch(fetchRoomFromGridInfo(name, grid));
+    axios
+      .delete('https://localhost:8443/grids/' + grid,
+        {
+          headers: {
+            'Authorization': token,
+            "Access-Control-Allow-Credentials": true,
+            "Access-Control-Allow-Origin": "*",
+            "Content-Type": "application/json"
+          },
+          data: {name: name}
+        })
+      .then(res => {
+        dispatch(fetchRoomFromGridInfoSuccess(res.data));
+      })
+      .catch(err => {
+        dispatch(fetchRoomFromGridInfoFailure(err.message));
       });
   };
 };

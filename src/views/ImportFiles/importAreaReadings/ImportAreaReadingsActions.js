@@ -25,6 +25,24 @@ export function uploadFile(fileToUpload) {
 
       )
       .catch(error => dispatch(postFileFailure(error.message.data))
+      )
+    dispatch(postFileStarted()); // antes de fazer o get, coloca o loading a true
+    axios
+      .post('https://localhost:8443/import/importAreaReadings', fileToUpload, {
+        headers: {
+          'Authorization': token,
+          "Access-Control-Allow-Credentials": true,
+          "Access-Control-Allow-Origin": "*",
+          'Content-Type': 'multipart/form-data'
+        },
+        body: {
+          fileToUpload
+        }
+      })
+      .then(response => dispatch(postFileSuccess(response.data))
+
+      )
+      .catch(error => dispatch(postFileFailure(error.message.data))
       );
   }
 }

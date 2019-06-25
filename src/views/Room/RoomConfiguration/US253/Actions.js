@@ -7,11 +7,11 @@ export const FETCH_SENSOR_INFO_FAILURE = 'FETCH_SENSOR_INFO_FAILURE';
 
 
 export const fetchSensor = ({link, typeSensor,name,sensorId,dateStartedFunctioning}) => {
-  const token = localStorage.getItem('loginToken')
+  const token = localStorage.getItem('loginToken');
+  const data = {link, typeSensor, name, sensorId, dateStartedFunctioning};
   return dispatch => {
     dispatch(fetchSensorInfo(link, typeSensor, name, sensorId, dateStartedFunctioning)); // antes de fazer o get, coloca o loading a true
     console.log(typeSensor)
-    const data = {link, typeSensor, name, sensorId, dateStartedFunctioning};
     axios
       .post(link, data, //falta autorização
         {

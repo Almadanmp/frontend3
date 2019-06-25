@@ -7,11 +7,11 @@ export const FETCH_MOTHERCHILD_FAILURE = 'FETCH_MOTHERCHILD_FAILURE';
 
 export const fetchMotherChild = ({geographicAreaId, id}) => {
   const token = localStorage.getItem('loginToken');
+  const data = {geographicAreaId, id};
   return dispatch => {
     dispatch(fetchMotherChildStarted(geographicAreaId, id));
     console.log(id)
     console.log(geographicAreaId)
-    const data = {geographicAreaId, id};
     axios
       .put('https://smarthome-g2-server.herokuapp.com/geoAreas/' + geographicAreaId + '/' + id, data, {
           headers: {
@@ -30,7 +30,27 @@ export const fetchMotherChild = ({geographicAreaId, id}) => {
       .catch(err => {
         dispatch(fetchMotherChildFailure(err.message))
       })
+    dispatch(fetchMotherChildStarted(geographicAreaId, id));
+    console.log(id)
+    console.log(geographicAreaId)
+    axios
+      .put('https://localhost:8443/geoAreas/' + geographicAreaId + '/' + id, data, {
+          headers: {
+            'Authorization': token,
+            "Access-Control-Allow-Credentials": true,
+            "Access-Control-Allow-Origin": "*",
+            "Content-Type": "application/json"
+          },
+          body:{areaChild:id},
 
+        }
+      )
+      .then(res => {
+        dispatch(fetchMotherChildSuccess(res.data));
+      })
+      .catch(err => {
+        dispatch(fetchMotherChildFailure(err.message))
+      })
   };
 };
 

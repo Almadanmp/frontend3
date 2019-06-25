@@ -10,9 +10,9 @@ export const FETCH_NO_ROOM_GRID_DATA = 'FETCH_NO_ROOM_GRID_DATA';
 export const attachRoomGrid = ({name, link}) => {
   console.log({name, link});
   const token = localStorage.getItem('loginToken');
+  const data = {name, link};
   return dispatch => {
     dispatch(fetchRoomGridInfo(name, link));
-    const data = {name, link};
     axios
       .post(link, data,
         {
@@ -34,6 +34,30 @@ export const attachRoomGrid = ({name, link}) => {
         else {
           if(err.response !== undefined){
           dispatch(fetchRoomGridInfoFailure(err.response.data));}
+        }
+      })
+    dispatch(fetchRoomGridInfo(name, link));
+    axios
+      .post(link, data,
+        {
+          headers: {
+            'Authorization': token,
+            "Access-Control-Allow-Credentials": true,
+            "Access-Control-Allow-Origin": "*",
+            "Content-Type": "application/json"
+          },
+          body: {name}
+        })
+      .then(res => {
+        dispatch(fetchRoomGridInfoSuccess(res.data));
+      })
+      .catch(err => {
+        if (err.response === 400) {
+          dispatch(fetchNoData(err.message))
+        }
+        else {
+          if(err.response !== undefined){
+            dispatch(fetchRoomGridInfoFailure(err.response.data));}
         }
       });
   };

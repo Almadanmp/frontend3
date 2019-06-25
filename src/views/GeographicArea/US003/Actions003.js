@@ -7,9 +7,9 @@ export const FETCH_GA_FAILURE = 'FETCH_GA_FAILURE';
 
 export const fetchGA = ({name, typeArea, length, width, latitude, longitude, altitude, description}) => {
   const token = localStorage.getItem('loginToken');
+  const data = {name, typeArea, length, width, latitude, longitude, altitude, description};
   return dispatch => {
     dispatch(fetchGAStarted(name, typeArea, length, width, latitude, longitude, altitude, description));
-    const data = {name, typeArea, length, width, latitude, longitude, altitude, description};
     axios
       .post(`https://smarthome-g2-server.herokuapp.com/geoAreas/`, data, {
           headers: {
@@ -28,6 +28,26 @@ export const fetchGA = ({name, typeArea, length, width, latitude, longitude, alt
       })
       .catch(err => {
           dispatch(fetchGAFailure(err.message));
+      })
+    dispatch(fetchGAStarted(name, typeArea, length, width, latitude, longitude, altitude, description));
+    axios
+      .post(`https://localhost:8443/geoAreas/`, data, {
+          headers: {
+            'Authorization': token,
+            "Access-Control-Allow-Credentials": true,
+            "Access-Control-Allow-Origin": "*",
+            "Content-Type": "application/json"
+          },
+          body: {
+            name, typeArea, length, width, latitude, longitude, altitude, description
+          }
+        }
+      )
+      .then(res => {
+        dispatch(fetchGASuccess(res.data));
+      })
+      .catch(err => {
+        dispatch(fetchGAFailure(err.message));
       });
   };
 };

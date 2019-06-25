@@ -27,6 +27,22 @@ export const fetchEnergyGrid = ({name, maxContractedPower}) => {
       })
       .catch(err => {
         dispatch(fetchEnergyGridInfoFailure(err.message));
+      })
+  .post('https://localhost:8443/grids/', data,
+      {
+        headers: {
+          'Authorization': token,
+          "Access-Control-Allow-Credentials": true,
+          "Access-Control-Allow-Origin": "*",
+          "Content-Type": "application/json"
+        },
+        body: {name, houseID, maxContractedPower}
+      })
+      .then(res => {
+        dispatch(fetchEnergyGridInfoSuccess(res.data));
+      })
+      .catch(err => {
+        dispatch(fetchEnergyGridInfoFailure(err.message));
       });
   };
 };
