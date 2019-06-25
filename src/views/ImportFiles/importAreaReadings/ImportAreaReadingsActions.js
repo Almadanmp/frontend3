@@ -26,6 +26,7 @@ export function uploadFile(fileToUpload) {
       )
       .catch(error => dispatch(postFileFailure(error.message.data))
       )
+
   }
 }
 
