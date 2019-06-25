@@ -49,13 +49,7 @@ export const addSensorType = (name, units)=> {
         dispatch(addSensorTypeSuccess(res.data));
       })
       .catch(err => {
-        if (err.response === 400) {
-          dispatch(addSensorTypeNoData(err.message))
-        } else {
-          if (err.response !== undefined) {
-            dispatch(addSensorTypeFailure(err.response.data));
-          }
-        }
+        dispatch(addSensorTypeFailure(err.message));
       });
   };
 };

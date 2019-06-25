@@ -40,8 +40,10 @@
     "react-helmet": "^5.2.1",
     "react-item-select": "^1.0.2",
     "react-redux": "^7.0.3",
+    "react-router": "^5.0.1",
     "react-router-config": "^5.0.0",
     "react-router-dom": "^5.0.0",
+    "react-scripts": "^3.0.1",
     "react-test-renderer": "^16.8.6",
     "react-thunk": "^1.0.0",
     "reactstrap": "^7.1.0",
@@ -50,9 +52,7 @@
     "save": "^2.4.0",
     "semantic-ui-react": "^0.87.1",
     "simple-line-icons": "^2.4.1",
-    "superagent": "^5.0.5",
-    "react-router": "^5.0.1",
-    "react-scripts": "^3.0.1"
+    "superagent": "^5.0.5"
   },
   "devDependencies": {
     "react-router": "^5.0.1",
