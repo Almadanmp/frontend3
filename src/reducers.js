@@ -1,4 +1,4 @@
-import {combineReducers} from 'redux/index';
+import {combineReducers} from 'redux';
 
 import Reducers001 from "./views/GeographicArea/US001/Reducers001";
 import Reducer002 from "./views/GeographicArea/US002/Reducers002";
